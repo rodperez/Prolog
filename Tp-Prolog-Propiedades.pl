@@ -1,5 +1,11 @@
 :- encoding(utf8). /* para no tener problemas con las tildes*/
 
+persona(carlos).
+persona(ana).
+persona(maría).
+persona(pedro).
+persona(chamaleon).
+
 propiedad(tinsmithCircle_1774).
 propiedad(av_moreno_708).
 propiedad(av_siempreViva_742).
@@ -20,12 +26,6 @@ extra(av_moreno_708, jardin).
 extra(av_siempreViva_742, jardin).
 extra(calle_falsa_123, no).
 
-/*personas(carlos, 3, jardin).
-personas(ana, 100).
-personas(maria, 2, 15).
-personas(pedro, 2, 15).
-*/
-
 metrosCúbicosDeLaPileta(tinsmithCircle_1774, 0).
 metrosCúbicosDeLaPileta(av_moreno_708, 30).
 metrosCúbicosDeLaPileta(av_siempreViva_742, 0).
@@ -37,13 +37,42 @@ existePropiedadConPiletaDe30Metros(Propiedades) :-
   findall(Propiedad, tienePiletaDe30Metros(Propiedad), Propiedades).
 
 tienePiletaDe30Metros(Propiedad) :-
-  metrosCúbicosDeLaPileta(Propiedad,30).
+  metrosCúbicosDeLaPileta(Propiedad,30). /*Funciona pero hay que arreglarlo*/
 
 /* Punto 2*/
 mismaCantidadDeAmbientes( Propiedad, Propiedad2) :-
-  propiedad(Propiedad), propiedad(Propiedad2) , ambiente(Propiedad, Amb), ambiente(Propiedad2, Amb),
-  ambientePropiedad( ambiente( Propiedad, Amb), Amb),
-  ambientePropiedad( ambiente( Propiedad2, Amb), Amb),
+  propiedad(Propiedad), propiedad(Propiedad2) ,
+  ambiente(Propiedad, Amb),
+  ambiente(Propiedad2, Amb),
   Propiedad \= Propiedad2.
 
-ambientePropiedad(ambiente(_,Amb),Amb).
+/* Punto 3*/
+
+quiere(pedro, caracteristicas( ambiente(2), metrosCúbicosDeLaPileta(15))).
+quiere(carlos, caracteristicas( ambiente(3), extra(jardin))).
+quiere(maría, caracteristicas( ambiente(2), metrosCúbicosDeLaPileta(15))).
+quiere(ana, caracteristicas( metrosCúbicosDeLaPileta(100))).
+
+quiere(chamaleon,Caracteristicas):-
+  persona(Persona),
+  Persona \= chamaleon,
+  quiere(Persona,Caracteristicas).
+
+/* Punto 4*/
+
+cumplePropiedad(Propiedad,Deseo):-
+  propiedadDeseada(Propiedad,Deseo).
+
+propiedadDeseada(Propiedad,extra(Extra)):-
+    extra(Propiedad,Extra).
+propiedadDeseada(Propiedad,precioAlquiler(Precio)):-
+    precioAlquiler(Propiedad,Precio).
+propiedadDeseada(Propiedad,ambiente(Ambiente)):-
+  ambiente(Propiedad,Amb),
+  cantOriginalMayorOIgualALaDeseada(Amb,Ambiente).
+propiedadDeseada(Propiedad,metrosCúbicosDeLaPileta(MetrosCúbicos)):-
+  metrosCúbicosDeLaPileta(Propiedad,MC),
+  cantOriginalMayorOIgualALaDeseada(MC,MetrosCúbicos).
+
+cantOriginalMayorOIgualALaDeseada(Original,Deseada):-
+  Original >= Deseada.
