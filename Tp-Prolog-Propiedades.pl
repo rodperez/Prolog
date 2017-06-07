@@ -57,18 +57,18 @@ quiere(chamaleon,Caracteristicas):-
 cumplePropiedad(Propiedad,Deseo):-
   propiedadDeseada(Propiedad,Deseo).
 
-propiedadDeseada(Propiedad,Exterior)):-
+propiedadDeseada(Propiedad,tiene(Propiedad,Exterior)):-
     tiene(Propiedad,Exterior).
 
-propiedadDeseada(Propiedad,precioAlquiler(Precio)):-
-    precioAlquiler(Propiedad,Precio).
+propiedadDeseada(Propiedad,tiene(Propiedad,precioAlquiler(Precio))):-
+    tiene(Propiedad,precioAlquiler(Precio)).
 
-propiedadDeseada(Propiedad,ambiente(Ambiente)):-
-  ambiente(Propiedad,Amb),
+propiedadDeseada(Propiedad,tiene(Propiedad,ambiente(Ambiente))):-
+  tiene(Propiedad,ambiente(Amb)),
   cantOriginalMayorOIgualALaDeseada(Amb,Ambiente).
 
-propiedadDeseada(Propiedad,metrosCúbicosDeLaPileta(MetrosCúbicos)):-
-  metrosCúbicosDeLaPileta(Propiedad,MC),
+propiedadDeseada(Propiedad,tiene(Propiedad, metrosCúbicosDeLaPileta(MetrosCúbicos))):-
+  tiene(Propiedad, metrosCúbicosDeLaPileta(MC)),
   cantOriginalMayorOIgualALaDeseada(MC,MetrosCúbicos).
 
 cantOriginalMayorOIgualALaDeseada(Original,Deseada):-
