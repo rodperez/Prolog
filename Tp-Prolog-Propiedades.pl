@@ -11,65 +11,62 @@ propiedad(av_moreno_708).
 propiedad(av_siempreViva_742).
 propiedad(calle_falsa_123).
 
-precioAlquiler(tinsmithCircle_1774, 700).
-precioAlquiler(av_moreno_708, 2000).
-precioAlquiler(av_siempreViva_742, 1000).
-precioAlquiler(calle_falsa_123, 200).
+tiene(av_moreno_708, precioAlquiler(2000)).
+tiene(av_moreno_708, ambiente(7)).
+tiene(av_moreno_708, jardin).
+tiene(av_moreno_708, metrosCúbicosDeLaPileta(30)).
+tiene(tinsmithCircle_1774, precioAlquiler(700)).
+tiene(tinsmithCircle_1774, ambiente(3)).
+tiene(tinsmithCircle_1774, jardin).
+tiene(av_siempreViva_742, precioAlquiler(1000)).
+tiene(av_siempreViva_742, ambiente(4)).
+tiene(av_siempreViva_742, jardin).
+tiene(calle_falsa_123, precioAlquiler(200)).
+tiene(calle_falsa_123, ambiente(3)).
 
-ambiente(tinsmithCircle_1774,3).
-ambiente(av_moreno_708, 7).
-ambiente(av_siempreViva_742, 4).
-ambiente(calle_falsa_123, 3).
-
-extra(tinsmithCircle_1774, jardin).
-extra(av_moreno_708, jardin).
-extra(av_siempreViva_742, jardin).
-extra(calle_falsa_123, no).
-
-metrosCúbicosDeLaPileta(tinsmithCircle_1774, 0).
-metrosCúbicosDeLaPileta(av_moreno_708, 30).
-metrosCúbicosDeLaPileta(av_siempreViva_742, 0).
-metrosCúbicosDeLaPileta(calle_falsa_123, 0).
-
-/* Punto 1*/
+/* Punto 1 Funciona Perfecto */
 
 existePropiedadConPiletaDe30Metros(Propiedades) :-
   findall(Propiedad, tienePiletaDe30Metros(Propiedad), Propiedades).
 
 tienePiletaDe30Metros(Propiedad) :-
-  metrosCúbicosDeLaPileta(Propiedad,30). /*Funciona pero hay que arreglarlo*/
+  tiene(Propiedad, metrosCúbicosDeLaPileta(30)).
 
-/* Punto 2*/
-mismaCantidadDeAmbientes( Propiedad, Propiedad2) :-
-  propiedad(Propiedad), propiedad(Propiedad2) ,
-  ambiente(Propiedad, Amb),
-  ambiente(Propiedad2, Amb),
+/* Punto 2 Funciona Perfecto */
+
+mismaCantidadDeAmbientes(Propiedad, Propiedad2) :-
+  propiedad(Propiedad), propiedad(Propiedad2),
+  tiene(Propiedad, ambiente(Amb)),
+  tiene(Propiedad2,ambiente(Amb)),
   Propiedad \= Propiedad2.
 
-/* Punto 3*/
+/* Punto 3 Funciona Perfeco */
 
-quiere(pedro, caracteristicas( ambiente(2), metrosCúbicosDeLaPileta(15))).
-quiere(carlos, caracteristicas( ambiente(3), extra(jardin))).
-quiere(maría, caracteristicas( ambiente(2), metrosCúbicosDeLaPileta(15))).
-quiere(ana, caracteristicas( metrosCúbicosDeLaPileta(100))).
+quiere(carlos, caracteristicas(ambiente(3), jardin)).
+quiere(pedro, caracteristicas(ambiente(2), metrosCúbicosDeLaPileta(15))).
+quiere(maría, caracteristicas(ambiente(2), metrosCúbicosDeLaPileta(15))).
+quiere(ana, caracteristicas(metrosCúbicosDeLaPileta(100))).
 
 quiere(chamaleon,Caracteristicas):-
   persona(Persona),
   Persona \= chamaleon,
   quiere(Persona,Caracteristicas).
 
-/* Punto 4*/
+/* punto 4 */
 
 cumplePropiedad(Propiedad,Deseo):-
   propiedadDeseada(Propiedad,Deseo).
 
-propiedadDeseada(Propiedad,extra(Extra)):-
-    extra(Propiedad,Extra).
+propiedadDeseada(Propiedad,Exterior)):-
+    tiene(Propiedad,Exterior).
+
 propiedadDeseada(Propiedad,precioAlquiler(Precio)):-
     precioAlquiler(Propiedad,Precio).
+
 propiedadDeseada(Propiedad,ambiente(Ambiente)):-
   ambiente(Propiedad,Amb),
   cantOriginalMayorOIgualALaDeseada(Amb,Ambiente).
+
 propiedadDeseada(Propiedad,metrosCúbicosDeLaPileta(MetrosCúbicos)):-
   metrosCúbicosDeLaPileta(Propiedad,MC),
   cantOriginalMayorOIgualALaDeseada(MC,MetrosCúbicos).
