@@ -43,9 +43,10 @@ quiere(carlos, ambiente(3)).
 quiere(carlos, jardin).
 quiere(pedro, ambiente(2)).
 quiere(pedro, pileta(15)).
-quiere(maría, ambiente(2)).
+quiere(maría, ambiente(9)).
 quiere(maría, pileta(15)).
 quiere(ana, pileta(100)).
+quiere(fede,planta).
 
 quiere(chamaleon,Caracteristicas):-
   persona(Persona),
@@ -144,3 +145,50 @@ Deseo = pileta(15) ;
 Deseo = pileta(15) ;
 Deseo = pileta(15) ;
 Deseo = pileta(15) ;*/
+
+/* punto 7 En Duda*/
+
+ningunaCumple(Propiedad,Caracteristicas):-
+  propiedad(Propiedad), persona(Persona),
+  quiere(Persona,Caracteristicas),
+  not(tiene(Propiedad,Caracteristicas)).
+
+/* punto 8 */
+
+cumpleTodo(Propiedad,Persona):-
+  propiedad(Propiedad), persona(Persona),
+  forall(quiere(Persona,Caracteristicas), cumple(Propiedad,Caracteristicas)).
+
+/*
+cumpleTodo(Propiedad,Persona).
+Propiedad = av_moreno_708,
+Persona = carlos ;
+Propiedad = av_moreno_708,
+Persona = pedro ;
+Propiedad = av_moreno_708,
+Persona = carlos ;
+Propiedad = av_moreno_708,
+Persona = pedro ;
+Propiedad = av_moreno_708,
+Persona = carlos ;
+Propiedad = av_moreno_708,
+Persona = pedro ;
+Propiedad = tinsmithCircle_1774,
+Persona = carlos ;
+Propiedad = tinsmithCircle_1774,
+Persona = carlos ;
+Propiedad = av_siempreViva_742,
+Persona = carlos ;
+Propiedad = av_siempreViva_742,
+Persona = carlos ; */
+
+/* 9 */
+
+/*ponerUnNombre(Propiedades):-
+  propiedad(Propiedad2),
+  findall(Propiedad,propiedadMásBarata(Propiedad,Propiedad2),Propiedades).
+*/
+propiedadMásBarata(Propiedad):-
+  precioPropiedad(Propiedad,Precio),
+  forall(precioPropiedad(Propiedad,Precio),
+  (precioPropiedad(Propiedad,Precio),precioPropiedad(_,Precio2),Precio < Precio2)).
