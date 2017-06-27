@@ -18,7 +18,7 @@ tiene(tinsmithCircle_1774,intalaciones([aireAcondicionado,extractor,calefacción
 tiene(av_siempreViva_742, ambiente(4)).
 tiene(av_siempreViva_742, jardin).
 tiene(av_siempreViva_742,intalaciones([calefacciónAGas])).
-tiene(calle_falsa_123, ambiente(3)).
+tiene(calle_falsa_123,ambiente(3)).
 
 
 precioPropiedad(av_moreno_708,2000).
@@ -230,3 +230,33 @@ Persona = carlos ;
 */
 
 /* 10 */
+
+satisfecho(Persona):-
+  cumpleTodo(Propiedad,Persona),
+  not((cumpleTodo(Propiedad2,Persona),Propiedad \= Propiedad2)).
+
+efectividad(Efectividad):-
+  cantidadPersonasSastisfechas(CantidadTotalSatisfecha),
+  cantidadPersonas(CantidadTotal),
+  Efectividad is CantidadTotalSatisfecha / CantidadTotal.
+
+cantidadPersonasSastisfechas(CantidadTotal):-
+  findall(Satisfecho,satisfecho(Satisfecho),Satisfechos),
+  length(Satisfechos,Cantidad),
+  CantidadTotal is Cantidad.
+
+cantidadPersonas(CantidadTotal):-
+  findall(Persona,persona(Persona),Personas),
+  length(Personas,Cantidad),
+  CantidadTotal is Cantidad.
+/* 11 */
+
+esChica(Propiedad):-
+  tiene(Propiedad,ambiente(1)).
+esChica(Propiedad):-
+  tiene(Propiedad,_),
+  not(tiene(Propiedad,ambiente(_))).
+
+propiedadTop(Propiedad):-
+  cumple(Propiedad,intalaciones([aireAcondicionado])),
+  not(esChica(Propiedad)).
