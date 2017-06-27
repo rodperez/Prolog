@@ -11,11 +11,15 @@ propiedad(Propiedad):- tiene(Propiedad,_).
 tiene(av_moreno_708, ambiente(7)).
 tiene(av_moreno_708, jardin).
 tiene(av_moreno_708, pileta(30)).
+tiene(av_moreno_708,intalaciones([aireAcondicionado,extractor,calefacciónPorLozaRadiante,vidriosDobles])).
 tiene(tinsmithCircle_1774, ambiente(3)).
 tiene(tinsmithCircle_1774, jardin).
+tiene(tinsmithCircle_1774,intalaciones([aireAcondicionado,extractor,calefacciónAGas])).
 tiene(av_siempreViva_742, ambiente(4)).
 tiene(av_siempreViva_742, jardin).
+tiene(av_siempreViva_742,intalaciones([calefacciónAGas])).
 tiene(calle_falsa_123, ambiente(3)).
+
 
 precioPropiedad(av_moreno_708,2000).
 precioPropiedad(tinsmithCircle_1774,700).
@@ -43,10 +47,14 @@ quiere(carlos, ambiente(3)).
 quiere(carlos, jardin).
 quiere(pedro, ambiente(2)).
 quiere(pedro, pileta(15)).
+quiere(pedro,intalaciones(vidriosDobles)).
+quiere(pedro,intalaciones(calefacciónPorLozaRadiante)).
 quiere(maría, ambiente(9)).
 quiere(maría, pileta(15)).
 quiere(ana, pileta(100)).
-quiere(fede,planta).
+quiere(ana,intalaciones(aireAcondicionado)).
+quiere(ana,intalaciones(vidriosDobles)).
+quiere(fede,planta). /* prueba */
 
 quiere(chamaleon,Caracteristicas):-
   persona(Persona),
@@ -66,9 +74,13 @@ cumple(Propiedad,ambiente(AmbientesDeseados)):-
 
 cumple(Propiedad,pileta(MetrosCúbicosDeseados)):-
   quiere(_,pileta(MetrosCúbicosDeseados)),
-  tiene(Propiedad, pileta(MetrosCúbicosOriginales)),
+  tiene(Propiedad,pileta(MetrosCúbicosOriginales)),
   MetrosCúbicosOriginales >= MetrosCúbicosDeseados.
 
+cumple(Propiedad,intalaciones(InstalacionesDeseadas)):-
+  quiere(_,intalaciones(InstalacionesDeseadas)),
+  tiene(Propiedad,intalaciones(InstalacionesOriginales)),
+  forall(member(Instalacion,InstalacionesDeseadas),member(Instalacion,InstalacionesOriginales)).
 /*
 -? cumple(Propiedad,ambiente(2)).
 Propiedad = av_moreno_708 ;
@@ -146,12 +158,19 @@ Deseo = pileta(15) ;
 Deseo = pileta(15) ;
 Deseo = pileta(15) ;*/
 
-/* punto 7 En Duda*/
+/* punto 7 */
 
-ningunaCumple(Propiedad,Caracteristicas):-
-  propiedad(Propiedad), persona(Persona),
-  quiere(Persona,Caracteristicas),
-  not(tiene(Propiedad,Caracteristicas)).
+ningunaCumple(Caracteristicas):-
+  quiere(_,Caracteristicas),
+  not(cumple(_,Caracteristicas)).
+
+/*
+Caracteristica = ambiente(9) ;
+Caracteristica = pileta(100) ;
+Caracteristica = planta ;
+Caracteristica = pileta(100) ;
+Caracteristica = ambiente(9) ;
+*/
 
 /* punto 8 */
 
@@ -184,11 +203,30 @@ Persona = carlos ; */
 
 /* 9 */
 
-/*ponerUnNombre(Propiedades):-
-  propiedad(Propiedad2),
-  findall(Propiedad,propiedadMásBarata(Propiedad,Propiedad2),Propiedades).
-*/
-propiedadMásBarata(Propiedad):-
+esMásBarata(Propiedad,Propiedad2):-
   precioPropiedad(Propiedad,Precio),
-  forall(precioPropiedad(Propiedad,Precio),
-  (precioPropiedad(Propiedad,Precio),precioPropiedad(_,Precio2),Precio < Precio2)).
+  precioPropiedad(Propiedad2,Precio2),
+  Precio =< Precio2.
+
+mejorOpción(Propiedad,Persona):-
+  cumpleTodo(Propiedad,Persona),
+  forall(cumpleTodo(Propiedad2,Persona),esMásBarata(Propiedad,Propiedad2)).
+
+/*
+Prop = av_moreno_708,
+Persona = pedro ;
+Prop = av_moreno_708,
+Persona = pedro ;
+Prop = av_moreno_708,
+Persona = pedro ;
+Prop = av_moreno_708,
+Persona = pedro ;
+Prop = tinsmithCircle_1774,
+Persona = carlos ;
+Prop = tinsmithCircle_1774,
+Persona = carlos ;
+Prop = tinsmithCircle_1774,
+Persona = carlos ;
+*/
+
+/* 10 */
