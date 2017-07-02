@@ -49,12 +49,12 @@ quiere(pedro, ambiente(2)).
 quiere(pedro, pileta(15)).
 quiere(pedro,intalaciones(vidriosDobles)).
 quiere(pedro,intalaciones(calefacciónPorLozaRadiante)).
-quiere(maría, ambiente(9)).
+quiere(maría, ambiente(9)). % TODO: Quiere DOS ambientes. Algunas soluciones de más abajo son diferentes por esto.
 quiere(maría, pileta(15)).
 quiere(ana, pileta(100)).
 quiere(ana,intalaciones(aireAcondicionado)).
 quiere(ana,intalaciones(vidriosDobles)).
-quiere(fede,planta). /* prueba */
+quiere(fede,planta). /* prueba */ % TODO: Podés sacarlo.
 
 quiere(chamaleon,Caracteristicas):-
   persona(Persona),
@@ -82,6 +82,8 @@ cumple(Propiedad,intalaciones(InstalacionesDeseadas)):-
   tiene(Propiedad,intalaciones(InstalacionesOriginales)),
   forall(member(Instalacion,InstalacionesDeseadas),member(Instalacion,InstalacionesOriginales)).
 /*
+
+% TODO: No hacía falta saber cuál propiedad era. Con el _ el motor ya nos dice si existe una solución o no.
 -? cumple(Propiedad,ambiente(2)).
 Propiedad = av_moreno_708 ;
 Propiedad = tinsmithCircle_1774 ;
@@ -213,6 +215,18 @@ mejorOpción(Propiedad,Persona):-
   forall(cumpleTodo(Propiedad2,Persona),esMásBarata(Propiedad,Propiedad2)).
 
 /*
+TODO: Falta la segunda opción.
+
+Vos decís "Es la mejor, si todas las que cumplen con lo que quiere tienen un precio mayor o igual".
+
+La otra opción es "Es la mejor, si NO EXISTE NINGUNA que cumpla todo y tenga un precio MENOR".
+
+Así que se puede hacer con not. Y fijate que antes es "mayor o igual" y ahora es "menor". Queda como una doble negación.
+Siempre un forall se puede pasar a un not de esa forma.
+
+*/
+
+/* TODO: ¿Y la consulta?
 Prop = av_moreno_708,
 Persona = pedro ;
 Prop = av_moreno_708,
@@ -234,6 +248,11 @@ Persona = carlos ;
 satisfecho(Persona):-
   cumpleTodo(Propiedad,Persona),
   not((cumpleTodo(Propiedad2,Persona),Propiedad \= Propiedad2)).
+/*
+TODO: ¿Está satisfecho si solo UNA propiedad cumple todo? ¿Si hay 10, no estaría satisfecho? El enunciado dice "al menos una".
+Así que lo del not vas a tener que borrarlo.
+Y ahí, fijate si te interesa saber cuál es la Propiedad. ¿Querés saber cuál es, o solo que exista alguna?
+*/
 
 efectividad(Efectividad):-
   cantidadPersonasSastisfechas(CantidadTotalSatisfecha),
@@ -243,20 +262,22 @@ efectividad(Efectividad):-
 cantidadPersonasSastisfechas(CantidadTotal):-
   findall(Satisfecho,satisfecho(Satisfecho),Satisfechos),
   length(Satisfechos,Cantidad),
-  CantidadTotal is Cantidad.
+  CantidadTotal is Cantidad. % TODO: NO!!! El is es para operaciones que hay que reducir. Borrá esto y usá un mismo nombre de variable para la cantidad.
 
 cantidadPersonas(CantidadTotal):-
   findall(Persona,persona(Persona),Personas),
   length(Personas,Cantidad),
-  CantidadTotal is Cantidad.
+  CantidadTotal is Cantidad. % TODO: Idem arriba.
 /* 11 */
 
 esChica(Propiedad):-
   tiene(Propiedad,ambiente(1)).
 esChica(Propiedad):-
-  tiene(Propiedad,_),
+  tiene(Propiedad,_), % TODO: Sería bueno contar con un predicado propiedad/1, que unifique a la propiedad a partir de tiene/2.
   not(tiene(Propiedad,ambiente(_))).
 
 propiedadTop(Propiedad):-
   cumple(Propiedad,intalaciones([aireAcondicionado])),
   not(esChica(Propiedad)).
+  
+% TODO: Falta la parte teórica. Tanto lo de por qué no agregaste algunas cosas del punto 1 (lo de no tener jardín y eso), como lo de instalaciones que se pide al final.
